@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login/Sign Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: url(hehe.jpg) no-repeat center center / cover;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 90%;
+            background: inherit;
+            filter: blur(10px);
+            z-index: -1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            min-height: 610px;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .form-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-header h2 {
+            font-size: 2rem;
+            color: gold;
+            margin-bottom: 10px;
+        }
+
+        .form-header p {
+            color: gold;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: gold;
+            font-weight: 500;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 40px;
+            color: gold;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #2575fc;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.2);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: gold;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #777;
+        }
+
+        .form-footer a {
+            color: #2575fc;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #ff4757;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success-message {
+            background: #2ed573;
+            color: gold;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 25px;
+            display: none;
+        }
+
+        .form-toggle {
+            display: none;
+        }
+
+        #loginForm {
+            display: block;
+        }
+
+        #signupForm {
+            display: none;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 40px;
+            color: gold;
+            cursor: pointer;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #007bff, #00c6ff);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #00a6e0);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0, 123, 255, 0.5);
+        }
+
+        .login-button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                max-width: 500px;
+            }
+
+            .form-header h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="form-section">
+            <div class="form-container">
+                <div class="form-header">
+                    <h2 id="formTitle">Login your Account</h2>
+                    <p id="formSubtitle">🫶❤️🔥</p>
+                </div>
+
+                <div class="success-message" id="successMessage">
+                    Account created successfully! You can now login.
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="form-toggle">
+                    <div class="form-group">
+                        <label for="loginUsername">Username</label>
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="loginUsername" class="form-control" placeholder="Enter your username">
+                        <div class="error-message" id="loginUsernameError">Please enter a valid username</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="loginPassword" class="form-control" placeholder="Enter your password">
+                        <i class="fas fa-eye password-toggle" id="loginPasswordToggle"></i>
+                        <div class="error-message" id="loginPasswordError">Please enter your password</div>
+                    </div>
+
+                    <button type="button" class="btn" id="loginBtn">Login</button>
+
+                    <div class="form-footer">
+                        <p>Don't have an account? <a href="#" id="showSignup">Sign Up</a></p>
+                    </div>
+                </form>
+
+                <!-- Signup Form -->
+                <form id="signupForm" class="form-toggle">
+                    <div class="form-group">
+                        <label for="signupUsername">Username</label>
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="signupUsername" class="form-control" placeholder="Choose a username">
+                        <div class="error-message" id="signupUsernameError">Username must be 4-20 characters</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupEmail">Email</label>
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="signupEmail" class="form-control" placeholder="Enter your email">
+                        <div class="error-message" id="signupEmailError">Please enter a valid email</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="signupPassword" class="form-control" placeholder="Create a password">
+                        <i class="fas fa-eye password-toggle" id="signupPasswordToggle"></i>
+                        <div class="error-message" id="signupPasswordError">Password must be at least 8 characters</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signupConfirmPassword">Confirm Password</label>
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="signupConfirmPassword" class="form-control" placeholder="Confirm your password">
+                        <i class="fas fa-eye password-toggle" id="signupConfirmPasswordToggle"></i>
+                        <div class="error-message" id="signupConfirmPasswordError">Passwords do not match</div>
+                    </div>
+
+                    <button type="button" class="btn" id="signupBtn">Create Account</button>
+
+                    <div class="form-footer">
+                        <p>Already have an account? <a href="#" id="showLogin">Log In</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+  </div>
+
+    <!-- BACK TO HOME BUTTON -->
+    <div class="login-button-container">
+        <button class="login-btn" onclick="window.location.href='index.html'">Back to Home</button>
+    </div>
+
+</body>
+</html>
+    
+    
+ <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const showSignup = document.getElementById('showSignup');
+            const showLogin = document.getElementById('showLogin');
+            const loginBtn = document.getElementById('loginBtn');
+            const signupBtn = document.getElementById('signupBtn');
+            const formTitle = document.getElementById('formTitle');
+            const formSubtitle = document.getElementById('formSubtitle');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Password toggles
+            const loginPasswordToggle = document.getElementById('loginPasswordToggle');
+            const signupPasswordToggle = document.getElementById('signupPasswordToggle');
+            const signupConfirmPasswordToggle = document.getElementById('signupConfirmPasswordToggle');
+            
+            // Initialize local storage for users if not exists
+            if (!localStorage.getItem('users')) {
+                localStorage.setItem('users', JSON.stringify({}));
+            }
+            
+            // Toggle between forms
+            showSignup.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+                formTitle.textContent = 'Create Account';
+                formSubtitle.textContent = 'Join our community in just a few steps';
+                successMessage.style.display = 'none';
+            });
+            
+            showLogin.addEventListener('click', function(e) {
+                e.preventDefault();
+                signupForm.style.display = 'none';
+                loginForm.style.display = 'block';
+                formTitle.textContent = 'Login to Account';
+                formSubtitle.textContent = 'Enter your credentials to access your account';
+            });
+            
+            // Password visibility toggles
+            function togglePasswordVisibility(inputId, toggleIcon) {
+                const input = document.getElementById(inputId);
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    toggleIcon.classList.remove('fa-eye');
+                    toggleIcon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    toggleIcon.classList.remove('fa-eye-slash');
+                    toggleIcon.classList.add('fa-eye');
+                }
+            }
+            
+            loginPasswordToggle.addEventListener('click', function() {
+                togglePasswordVisibility('loginPassword', this);
+            });
+            
+            signupPasswordToggle.addEventListener('click', function() {
+                togglePasswordVisibility('signupPassword', this);
+            });
+            
+            signupConfirmPasswordToggle.addEventListener('click', function() {
+                togglePasswordVisibility('signupConfirmPassword', this);
+            });
+            
+            // Validation functions
+            function validateLoginForm() {
+                let isValid = true;
+                
+                const username = document.getElementById('loginUsername').value.trim();
+                const password = document.getElementById('loginPassword').value.trim();
+                
+                // Reset errors
+                document.getElementById('loginUsernameError').style.display = 'none';
+                document.getElementById('loginPasswordError').style.display = 'none';
+                
+                // Validate username
+                if (!username) {
+                    document.getElementById('loginUsernameError').textContent = 'Please enter your username';
+                    document.getElementById('loginUsernameError').style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Validate password
+                if (!password) {
+                    document.getElementById('loginPasswordError').textContent = 'Please enter your password';
+                    document.getElementById('loginPasswordError').style.display = 'block';
+                    isValid = false;
+                }
+                
+                return isValid;
+            }
+            
+            function validateSignupForm() {
+                let isValid = true;
+                
+                const username = document.getElementById('signupUsername').value.trim();
+                const email = document.getElementById('signupEmail').value.trim();
+                const password = document.getElementById('signupPassword').value;
+                const confirmPassword = document.getElementById('signupConfirmPassword').value;
+                
+                // Reset errors
+                document.getElementById('signupUsernameError').style.display = 'none';
+                document.getElementById('signupEmailError').style.display = 'none';
+                document.getElementById('signupPasswordError').style.display = 'none';
+                document.getElementById('signupConfirmPasswordError').style.display = 'none';
+                
+                // Validate username
+                if (!username) {
+                    document.getElementById('signupUsernameError').textContent = 'Please enter a username';
+                    document.getElementById('signupUsernameError').style.display = 'block';
+                    isValid = false;
+                } else if (username.length < 4 || username.length > 20) {
+                    document.getElementById('signupUsernameError').textContent = 'Username must be 4-20 characters';
+                    document.getElementById('signupUsernameError').style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Validate email
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!email) {
+                    document.getElementById('signupEmailError').textContent = 'Please enter your email';
+                    document.getElementById('signupEmailError').style.display = 'block';
+                    isValid = false;
+                } else if (!emailRegex.test(email)) {
+                    document.getElementById('signupEmailError').textContent = 'Please enter a valid email';
+                    document.getElementById('signupEmailError').style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Validate password
+                if (!password) {
+                    document.getElementById('signupPasswordError').textContent = 'Please enter a password';
+                    document.getElementById('signupPasswordError').style.display = 'block';
+                    isValid = false;
+                } else if (password.length < 8) {
+                    document.getElementById('signupPasswordError').textContent = 'Password must be at least 8 characters';
+                    document.getElementById('signupPasswordError').style.display = 'block';
+                    isValid = false;
+                }
+                
+                // Validate confirm password
+                if (!confirmPassword) {
+                    document.getElementById('signupConfirmPasswordError').textContent = 'Please confirm your password';
+                    document.getElementById('signupConfirmPasswordError').style.display = 'block';
+                    isValid = false;
+                } else if (password !== confirmPassword) {
+                    document.getElementById('signupConfirmPasswordError').textContent = 'Passwords do not match';
+                    document.getElementById('signupConfirmPasswordError').style.display = 'block';
+                    isValid = false;
+                }
+                
+                return isValid;
+            }
+            
+            // Form submission handlers
+            loginBtn.addEventListener('click', function() {
+                if (validateLoginForm()) {
+                    const username = document.getElementById('loginUsername').value.trim();
+                    const password = document.getElementById('loginPassword').value;
+                    
+                    const users = JSON.parse(localStorage.getItem('users'));
+                    
+                    if (users[username] && users[username].password === password) {
+                        // Successful login
+                        alert(`Welcome back, ${username}! Login successful.`);
+                        // Redirect to dashboard or home page
+                    } else {
+                        // Failed login
+                        alert('Invalid username or password. Please try again.');
+                    }
+                }
+            });
+            
+            signupBtn.addEventListener('click', function() {
+                if (validateSignupForm()) {
+                    const username = document.getElementById('signupUsername').value.trim();
+                    const email = document.getElementById('signupEmail').value.trim();
+                    const password = document.getElementById('signupPassword').value;
+                    
+                    const users = JSON.parse(localStorage.getItem('users'));
+                    
+                    if (users[username]) {
+                        // Username already exists
+                        document.getElementById('signupUsernameError').textContent = 'Username already taken';
+                        document.getElementById('signupUsernameError').style.display = 'block';
+                        return;
+                    }
+                    
+                    // Create new user
+                    users[username] = {
+                        email: email,
+                        password: password, // In a real app, this should be hashed
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    // Save to local storage
+                    localStorage.setItem('users', JSON.stringify(users));
+                    
+                    // Show success message
+                    successMessage.style.display = 'block';
+                    
+                    // Clear form
+                    document.getElementById('signupUsername').value = '';
+                    document.getElementById('signupEmail').value = '';
+                    document.getElementById('signupPassword').value = '';
+                    document.getElementById('signupConfirmPassword').value = '';
+                    
+                    // Auto switch to login after 3 seconds
+                    setTimeout(() => {
+                        signupForm.style.display = 'none';
+                        loginForm.style.display = 'block';
+                        formTitle.textContent = 'Login to Account';
+                        formSubtitle.textContent = 'Enter your credentials to access your account';
+                        successMessage.style.display = 'none';
+                    }, 3000);
+                }
+            });
+        });
+    </script>
+    
+    
+        
+
+</body>
+
+
+</html>  
+                          
