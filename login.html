@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login/Sign Up</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
@@ -13,40 +14,29 @@
         }
 
         body {
-            background: url(hehe.jpg) no-repeat center center / cover;
-            height: 100vh;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #2575fc);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
             position: relative;
-            overflow: hidden;
-        }
-
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 90%;
-            background: inherit;
-            filter: blur(10px);
-            z-index: -1;
+            overflow-x: hidden;
         }
 
         .container {
             width: 100%;
-            max-width: 900px;
+            max-width: 768px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             overflow: hidden;
             display: flex;
-            min-height: 610px;
             flex-direction: column;
             padding: 20px;
+            margin: 20px 0;
         }
 
         .form-section {
@@ -64,21 +54,23 @@
 
         .form-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .form-header h2 {
             font-size: 2rem;
             color: gold;
             margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .form-header p {
             color: gold;
+            font-size: 1.1rem;
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             position: relative;
         }
 
@@ -87,6 +79,7 @@
             margin-bottom: 8px;
             color: gold;
             font-weight: 500;
+            font-size: 1rem;
         }
 
         .input-icon {
@@ -94,27 +87,35 @@
             left: 15px;
             top: 40px;
             color: gold;
+            font-size: 1rem;
         }
 
         .form-control {
             width: 100%;
-            padding: 15px 15px 15px 45px;
-            border: 2px solid #e1e1e1;
+            padding: 14px 15px 14px 45px;
+            border: 2px solid rgba(225, 225, 225, 0.5);
             border-radius: 10px;
             font-size: 16px;
             transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .form-control:focus {
-            border-color: #2575fc;
+            border-color: #ffd700;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.2);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.3);
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .btn {
             display: block;
             width: 100%;
-            padding: 15px;
+            padding: 14px;
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             color: gold;
             border: none;
@@ -123,11 +124,13 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
+            box-shadow: 0 6px 15px rgba(37, 117, 252, 0.4);
         }
 
         .btn:active {
@@ -137,34 +140,39 @@
         .form-footer {
             text-align: center;
             margin-top: 25px;
-            color: #777;
+            color: #ddd;
         }
 
         .form-footer a {
-            color: #2575fc;
+            color: #ffd700;
             text-decoration: none;
             font-weight: 600;
+            transition: all 0.2s ease;
         }
 
         .form-footer a:hover {
             text-decoration: underline;
+            color: white;
         }
 
         .error-message {
-            color: #ff4757;
+            color: #ff6b6b;
             font-size: 14px;
-            margin-top: 5px;
+            margin-top: 6px;
             display: none;
+            font-weight: 500;
         }
 
         .success-message {
-            background: #2ed573;
-            color: gold;
+            background: rgba(46, 213, 115, 0.8);
+            color: white;
             padding: 15px;
             border-radius: 10px;
             text-align: center;
             margin-bottom: 25px;
             display: none;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
         .form-toggle {
@@ -185,51 +193,121 @@
             top: 40px;
             color: gold;
             cursor: pointer;
+            font-size: 1rem;
         }
 
         .login-btn {
-            background: linear-gradient(135deg, #007bff, #00c6ff);
-            color: white;
+            background: linear-gradient(135deg, #ffd700, #ffa500);
+            color: #1a1a2e;
             border: none;
             padding: 12px 24px;
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
             border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
         }
 
         .login-btn:hover {
-            background: linear-gradient(135deg, #0056b3, #00a6e0);
+            background: linear-gradient(135deg, #ffcc00, #ff8c00);
             transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(0, 123, 255, 0.5);
+            box-shadow: 0 6px 14px rgba(255, 215, 0, 0.4);
         }
 
         .login-button-container {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
+        /* Responsive adjustments */
         @media (max-width: 768px) {
             .container {
-                max-width: 500px;
+                max-width: 90%;
+                padding: 15px;
             }
 
             .form-header h2 {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
+            }
+
+            .form-header p {
+                font-size: 1rem;
+            }
+
+            .form-group {
+                margin-bottom: 18px;
+            }
+
+            .form-control {
+                padding: 12px 15px 12px 40px;
+                font-size: 15px;
+            }
+
+            .input-icon, .password-toggle {
+                font-size: 0.9rem;
+            }
+
+            .btn {
+                padding: 12px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            
+            .container {
+                max-width: 100%;
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+            .form-header h2 {
+                font-size: 1.6rem;
+            }
+
+            .form-header p {
+                font-size: 0.95rem;
+            }
+
+            .form-group label {
+                font-size: 0.95rem;
+            }
+
+            .form-control {
+                padding: 11px 15px 11px 38px;
+                font-size: 14px;
+            }
+
+            .btn {
+                padding: 11px;
+                font-size: 14px;
+            }
+
+            .form-footer {
+                font-size: 0.9rem;
+            }
+            
+            .login-btn {
+                padding: 11px 20px;
+                font-size: 15px;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+
+        <div class="container">
         <div class="form-section">
             <div class="form-container">
                 <div class="form-header">
-                    <h2 id="formTitle">Login your Account</h2>
-                    <p id="formSubtitle">🫶❤️🔥</p>
+                    <h2 id="formTitle">Login to Your Account</h2>
+                    <p id="formSubtitle">Welcome back! Please enter your details</p>
                 </div>
 
                 <div class="success-message" id="successMessage">
@@ -300,18 +378,14 @@
                 </form>
             </div>
         </div>
-  </div>
+    </div>
 
     <!-- BACK TO HOME BUTTON -->
     <div class="login-button-container">
         <button class="login-btn" onclick="window.location.href='index.html'">Back to Home</button>
     </div>
 
-</body>
-</html>
-    
-    
- <script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             // DOM Elements
             const loginForm = document.getElementById('loginForm');
@@ -349,7 +423,7 @@
                 signupForm.style.display = 'none';
                 loginForm.style.display = 'block';
                 formTitle.textContent = 'Login to Account';
-                formSubtitle.textContent = 'Enter your credentials to access your account';
+                formSubtitle.textContent = 'Welcome back! Please enter your details';
             });
             
             // Password visibility toggles
@@ -468,7 +542,7 @@
                 return isValid;
             }
             
-            // Form submission handlers
+       // Form submission handlers
             loginBtn.addEventListener('click', function() {
                 if (validateLoginForm()) {
                     const username = document.getElementById('loginUsername').value.trim();
@@ -526,19 +600,14 @@
                         signupForm.style.display = 'none';
                         loginForm.style.display = 'block';
                         formTitle.textContent = 'Login to Account';
-                        formSubtitle.textContent = 'Enter your credentials to access your account';
+                        formSubtitle.textContent = 'Welcome back! Please enter your details';
                         successMessage.style.display = 'none';
                     }, 3000);
                 }
             });
         });
     </script>
-    
-    
-        
-
 </body>
+</html>
 
-
-</html>  
-                          
+    
