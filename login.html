@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login/Sign Up</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>Secure Account Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -25,9 +25,21 @@
             overflow-x: hidden;
         }
 
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1533134486753-c833f0ed4866?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
         .container {
             width: 100%;
-            max-width: 768px;
+            max-width: 600px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 20px;
@@ -35,43 +47,63 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 30px;
             margin: 20px 0;
+            transition: all 0.4s ease;
         }
 
-        .form-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .form-container {
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .form-header {
+        /* Header Styles */
+        .header {
             text-align: center;
             margin-bottom: 30px;
         }
 
-        .form-header h2 {
-            font-size: 2rem;
+        .header h1 {
+            font-size: 2.5rem;
             color: gold;
             margin-bottom: 10px;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        .form-header p {
-            color: gold;
+        .header p {
+            color: #ffd700;
             font-size: 1.1rem;
+        }
+
+        /* Form Container */
+        .form-container {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            position: relative;
+            min-height: 650px;
+            overflow: hidden;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-header h2 {
+            font-size: 1.8rem;
+            color: gold;
+            margin-bottom: 10px;
+            transition: all 0.4s ease;
+        }
+
+        .form-header p {
+            color: #ffd700;
+            font-size: 1rem;
+            transition: all 0.4s ease;
         }
 
         .form-group {
             margin-bottom: 20px;
             position: relative;
+            transition: all 0.4s ease;
         }
 
         .form-group label {
@@ -141,6 +173,7 @@
             text-align: center;
             margin-top: 25px;
             color: #ddd;
+            transition: all 0.4s ease;
         }
 
         .form-footer a {
@@ -176,15 +209,37 @@
         }
 
         .form-toggle {
-            display: none;
+            position: absolute;
+            top: 25px;
+            width: 100%;
+            left: 0;
+            padding: 0 25px;
+            transition: all 0.4s ease;
         }
 
         #loginForm {
-            display: block;
+            opacity: 1;
+            transform: translateX(0);
         }
 
         #signupForm {
-            display: none;
+            opacity: 0;
+            transform: translateX(100%);
+            position: absolute;
+            top: 25px;
+            left: 0;
+            width: 100%;
+            padding: 0 25px;
+        }
+
+        .show-signup #loginForm {
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+
+        .show-signup #signupForm {
+            opacity: 1;
+            transform: translateX(0);
         }
 
         .password-toggle {
@@ -196,7 +251,203 @@
             font-size: 1rem;
         }
 
-        .login-btn {
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-header h2 {
+            font-size: 2.2rem;
+            color: gold;
+            margin-bottom: 15px;
+        }
+
+        .user-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .user-card h3 {
+            color: gold;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .user-card h3 i {
+            margin-right: 10px;
+        }
+
+        .user-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .detail {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .detail p {
+            color: #ddd;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .detail p span {
+            color: gold;
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 30px auto 0;
+            display: block;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 65, 108, 0.4);
+        }
+
+        /* OTP Modal */
+        .otp-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .otp-content {
+            background: rgba(30, 30, 60, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .otp-content h2 {
+            color: gold;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .otp-content p {
+            color: #ddd;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .otp-input {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .otp-input input {
+            width: 50px;
+            height: 60px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            border: 2px solid #444;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .otp-input input:focus {
+            border-color: gold;
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+
+        .verify-btn {
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .verify-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 176, 155, 0.4);
+        }
+
+        /* Password Strength Meter */
+        .password-strength {
+            height: 6px;
+            border-radius: 3px;
+            margin-top: 8px;
+            background: #444;
+            overflow: hidden;
+        }
+
+        .strength-meter {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .strength-0 { width: 20%; background: #ff4757; }
+        .strength-1 { width: 40%; background: #ff6b81; }
+        .strength-2 { width: 60%; background: #ffa502; }
+        .strength-3 { width: 80%; background: #2ed573; }
+        .strength-4 { width: 100%; background: #1e90ff; }
+
+        .password-rules {
+            color: #ddd;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            line-height: 1.4;
+        }
+
+        /* Home Button */
+        .home-btn {
             background: linear-gradient(135deg, #ffd700, #ffa500);
             color: #1a1a2e;
             border: none;
@@ -206,121 +457,104 @@
             border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-top: 20px;
+            display: block;
+            margin: 20px auto;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            margin-top: 20px;
         }
 
-        .login-btn:hover {
-            background: linear-gradient(135deg, #ffcc00, #ff8c00);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(255, 215, 0, 0.4);
+        .home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 215, 0, 0.4);
         }
 
-        .login-button-container {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        /* Responsive adjustments */
+        /* Responsive Design */
         @media (max-width: 768px) {
             .container {
-                max-width: 90%;
-                padding: 15px;
+                max-width: 95%;
+                padding: 20px;
             }
-
-            .form-header h2 {
-                font-size: 1.8rem;
+            
+            .header h1 {
+                font-size: 2rem;
             }
-
-            .form-header p {
+            
+            .header p {
                 font-size: 1rem;
             }
-
-            .form-group {
-                margin-bottom: 18px;
+            
+            .form-container {
+                padding: 20px;
             }
-
-            .form-control {
-                padding: 12px 15px 12px 40px;
-                font-size: 15px;
+            
+            .form-header h2 {
+                font-size: 1.6rem;
             }
-
-            .input-icon, .password-toggle {
-                font-size: 0.9rem;
-            }
-
-            .btn {
-                padding: 12px;
-                font-size: 15px;
+            
+            .otp-input input {
+                width: 40px;
+                height: 50px;
+                font-size: 20px;
             }
         }
 
         @media (max-width: 480px) {
-            body {
-                padding: 15px;
-            }
-            
             .container {
-                max-width: 100%;
                 padding: 15px;
                 border-radius: 15px;
             }
-
-            .form-header h2 {
-                font-size: 1.6rem;
-            }
-
-            .form-header p {
-                font-size: 0.95rem;
-            }
-
-            .form-group label {
-                font-size: 0.95rem;
-            }
-
-            .form-control {
-                padding: 11px 15px 11px 38px;
-                font-size: 14px;
-            }
-
-            .btn {
-                padding: 11px;
-                font-size: 14px;
-            }
-
-            .form-footer {
-                font-size: 0.9rem;
+            
+            .header h1 {
+                font-size: 1.7rem;
             }
             
-            .login-btn {
-                padding: 11px 20px;
-                font-size: 15px;
+            .form-control {
+                padding: 12px 15px 12px 40px;
+            }
+            
+            .input-icon, .password-toggle {
+                top: 37px;
+            }
+            
+            .user-card {
+                padding: 15px;
+            }
+            
+            .user-card h3 {
+                font-size: 1.2rem;
+            }
+            
+            .otp-content {
+                padding: 20px;
             }
         }
-    </style>
+            </style>
+
+
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+          
+        </div>
 
-
-        <div class="container">
-        <div class="form-section">
-            <div class="form-container">
+        <div class="form-container">
+            <!-- Login Form -->
+            <div id="loginForm" class="form-toggle">
                 <div class="form-header">
-                    <h2 id="formTitle">Login to Your Account</h2>
-                    <p id="formSubtitle">Welcome back! Please enter your details</p>
+                    <h2>Login to Your Account</h2>
                 </div>
 
-                <div class="success-message" id="successMessage">
-                    Account created successfully! You can now login.
+                <div class="success-message" id="loginSuccessMessage">
+                    Login successful! Redirecting to dashboard...
                 </div>
 
-                <!-- Login Form -->
-                <form id="loginForm" class="form-toggle">
+                <form id="loginFormElement">
                     <div class="form-group">
                         <label for="loginUsername">Username</label>
                         <i class="fas fa-user input-icon"></i>
                         <input type="text" id="loginUsername" class="form-control" placeholder="Enter your username">
-                        <div class="error-message" id="loginUsernameError">Please enter a valid username</div>
+                        <div class="error-message" id="loginUsernameError">Please enter your username</div>
                     </div>
 
                     <div class="form-group">
@@ -331,15 +565,26 @@
                         <div class="error-message" id="loginPasswordError">Please enter your password</div>
                     </div>
 
-                    <button type="button" class="btn" id="loginBtn">Login</button>
+                    <button type="submit" class="btn" id="loginBtn">Login</button>
 
                     <div class="form-footer">
                         <p>Don't have an account? <a href="#" id="showSignup">Sign Up</a></p>
                     </div>
                 </form>
+            </div>
 
-                <!-- Signup Form -->
-                <form id="signupForm" class="form-toggle">
+            <!-- Signup Form -->
+            <div id="signupForm" class="form-toggle">
+                <div class="form-header">
+                    <h2>Create New Account</h2>
+                    <p>Join our community in just a few steps</p>
+                </div>
+
+                <div class="success-message" id="signupSuccessMessage">
+                    Account created successfully! Please verify your email.
+                </div>
+
+                <form id="signupFormElement">
                     <div class="form-group">
                         <label for="signupUsername">Username</label>
                         <i class="fas fa-user input-icon"></i>
@@ -357,20 +602,25 @@
                     <div class="form-group">
                         <label for="signupPassword">Password</label>
                         <i class="fas fa-lock input-icon"></i>
-                        <input type="password" id="signupPassword" class="form-control" placeholder="Create a password">
+                        <input type="password" id="signupPassword" class="form-control" placeholder="Create a strong password">
                         <i class="fas fa-eye password-toggle" id="signupPasswordToggle"></i>
-                        <div class="error-message" id="signupPasswordError">Password must be at least 8 characters</div>
+                        <div class="password-strength">
+                            <div class="strength-meter" id="passwordStrength"></div>
+                        </div>
+                        <div class="password-rules">
+                            Password must contain: 8+ characters, uppercase, lowercase, number, and special character
+                        </div>
+                        <div class="error-message" id="signupPasswordError">Password must be at least 8 characters with mixed case, number, and symbol</div>
                     </div>
 
                     <div class="form-group">
-                        <label for="signupConfirmPassword">Confirm Password</label>
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" id="signupConfirmPassword" class="form-control" placeholder="Confirm your password">
-                        <i class="fas fa-eye password-toggle" id="signupConfirmPasswordToggle"></i>
-                        <div class="error-message" id="signupConfirmPasswordError">Passwords do not match</div>
+                        <label for="signupContact">Contact Number</label>
+                        <i class="fas fa-phone input-icon"></i>
+                        <input type="tel" id="signupContact" class="form-control" placeholder="Enter your phone number">
+                        <div class="error-message" id="signupContactError">Please enter a valid phone number</div>
                     </div>
 
-                    <button type="button" class="btn" id="signupBtn">Create Account</button>
+                    <button type="submit" class="btn" id="signupBtn">Create Account</button>
 
                     <div class="form-footer">
                         <p>Already have an account? <a href="#" id="showLogin">Log In</a></p>
@@ -378,55 +628,258 @@
                 </form>
             </div>
         </div>
+
+        <!-- Dashboard Section -->
+        <div class="dashboard" id="dashboard">
+            <div class="dashboard-header">
+                <h2>User Dashboard</h2>
+                <p>Welcome to your account dashboard. Here are all registered users:</p>
+            </div>
+
+            <div id="usersList">
+                <!-- Users will be dynamically added here -->
+            </div>
+
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
     </div>
 
-    <!-- BACK TO HOME BUTTON -->
-    <div class="login-button-container">
-        <button class="login-btn" onclick="window.location.href='index.html'">Back to Home</button>
+<!-- OTP Verification Modal -->
+    <div class="otp-modal" id="otpModal">
+        <div class="otp-content">
+            <h2>Verify Your Email</h2>
+            <p>We've sent a 6-digit verification code to your email address. Please enter it below to complete your registration.</p>
+            
+            <div class="otp-input">
+                <input type="text" maxlength="1" id="otp1" class="otp-digit">
+                <input type="text" maxlength="1" id="otp2" class="otp-digit">
+                <input type="text" maxlength="1" id="otp3" class="otp-digit">
+                <input type="text" maxlength="1" id="otp4" class="otp-digit">
+                <input type="text" maxlength="1" id="otp5" class="otp-digit">
+                <input type="text" maxlength="1" id="otp6" class="otp-digit">
+            </div>
+            
+            <button class="verify-btn" id="verifyBtn">Verify Account</button>
+            <p style="margin-top: 20px; color: #aaa;">Didn't receive the code? <a href="#" id="resendOtp">Resend</a></p>
+        </div>
     </div>
 
+    <!-- Back to Home Button -->
+    <button class="home-btn" onclick="window.location.href='index.html'">Back to Home</button>
+
+    <!-- Add EmailJS Script -->
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <script>
+        // Initialize EmailJS with your public key
+        (function() {
+            emailjs.init('Zkcfd3XFJMRX8ognz');
+        })();
+
         document.addEventListener('DOMContentLoaded', function() {
             // DOM Elements
-            const loginForm = document.getElementById('loginForm');
-            const signupForm = document.getElementById('signupForm');
+            const loginForm = document.getElementById('loginFormElement');
+            const signupForm = document.getElementById('signupFormElement');
             const showSignup = document.getElementById('showSignup');
             const showLogin = document.getElementById('showLogin');
-            const loginBtn = document.getElementById('loginBtn');
-            const signupBtn = document.getElementById('signupBtn');
-            const formTitle = document.getElementById('formTitle');
-            const formSubtitle = document.getElementById('formSubtitle');
-            const successMessage = document.getElementById('successMessage');
+            const formContainer = document.querySelector('.form-container');
+            const dashboard = document.getElementById('dashboard');
+            const otpModal = document.getElementById('otpModal');
+            const verifyBtn = document.getElementById('verifyBtn');
+            const resendOtp = document.getElementById('resendOtp');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const usersList = document.getElementById('usersList');
             
-            // Password toggles
+            // Password toggle elements
             const loginPasswordToggle = document.getElementById('loginPasswordToggle');
             const signupPasswordToggle = document.getElementById('signupPasswordToggle');
-            const signupConfirmPasswordToggle = document.getElementById('signupConfirmPasswordToggle');
             
-            // Initialize local storage for users if not exists
-            if (!localStorage.getItem('users')) {
-                localStorage.setItem('users', JSON.stringify({}));
-            }
+            // OTP input fields
+            const otpInputs = document.querySelectorAll('.otp-digit');
             
-            // Toggle between forms
+            // Store user data
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            let currentUser = null;
+            let generatedOTP = null;
+            let currentSignupData = null;
+            
+            // Toggle between login and signup forms
             showSignup.addEventListener('click', function(e) {
                 e.preventDefault();
-                loginForm.style.display = 'none';
-                signupForm.style.display = 'block';
-                formTitle.textContent = 'Create Account';
-                formSubtitle.textContent = 'Join our community in just a few steps';
-                successMessage.style.display = 'none';
+                formContainer.classList.add('show-signup');
+                resetFormErrors('signup');
             });
             
             showLogin.addEventListener('click', function(e) {
                 e.preventDefault();
-                signupForm.style.display = 'none';
-                loginForm.style.display = 'block';
-                formTitle.textContent = 'Login to Account';
-                formSubtitle.textContent = 'Welcome back! Please enter your details';
+                formContainer.classList.remove('show-signup');
+                resetFormErrors('login');
             });
             
-            // Password visibility toggles
+            // Toggle password visibility
+            loginPasswordToggle.addEventListener('click', function() {
+                togglePasswordVisibility('loginPassword', loginPasswordToggle);
+            });
+            
+            signupPasswordToggle.addEventListener('click', function() {
+                togglePasswordVisibility('signupPassword', signupPasswordToggle);
+            });
+            
+            // Password strength indicator
+            document.getElementById('signupPassword').addEventListener('input', function() {
+                updatePasswordStrength(this.value);
+            });
+            
+            // OTP input handling
+            otpInputs.forEach((input, index) => {
+                input.addEventListener('input', function() {
+                    if (this.value.length === 1) {
+                        if (index < otpInputs.length - 1) {
+                            otpInputs[index + 1].focus();
+                        }
+                    }
+                });
+                
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && this.value.length === 0) {
+                        if (index > 0) {
+                            otpInputs[index - 1].focus();
+                        }
+                    }
+                });
+            });
+            
+              // Login form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (validateLoginForm()) {
+                    const username = document.getElementById('loginUsername').value;
+                    const password = document.getElementById('loginPassword').value;
+                    
+                    // Check if user exists
+                    const user = users.find(u => u.username === username && u.password === password);
+                    
+                    if (user) {
+                        if (user.verified) {
+                            // Successful login
+                            currentUser = user;
+                            showSuccessMessage('loginSuccessMessage');
+                            
+                            // Redirect to dashboard after 2 seconds
+                            setTimeout(() => {
+                                showDashboard();
+                            }, 2000);
+                        } else {
+                            // Account not verified
+                            showError('loginPasswordError', 'Account not verified. Please check your email for verification code.');
+                        }
+                    } else {
+                        // Invalid credentials
+                        showError('loginUsernameError', 'Invalid username or password');
+                        showError('loginPasswordError', 'Invalid username or password');
+                    }
+                }
+            });
+            
+            // Signup form submission
+            signupForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (validateSignupForm()) {
+                    const username = document.getElementById('signupUsername').value;
+                    const email = document.getElementById('signupEmail').value;
+                    const password = document.getElementById('signupPassword').value;
+                    const contact = document.getElementById('signupContact').value;
+                    
+                    // Check if username or email already exists
+                    const usernameExists = users.some(u => u.username === username);
+                    const emailExists = users.some(u => u.email === email);
+                    
+                    if (usernameExists) {
+                        showError('signupUsernameError', 'Username already taken');
+                        return;
+                    }
+                    
+                    if (emailExists) {
+                        showError('signupEmailError', 'Email already registered');
+                        return;
+                    }
+                    
+                    // Store signup data temporarily
+                    currentSignupData = {
+                        username,
+                        email,
+                        password,
+                        contact,
+                        verified: false
+                    };
+                    
+                    // Generate and send OTP
+                    generatedOTP = generateOTP();
+                    sendOTP(email, generatedOTP);
+                    
+                    // Show OTP modal
+                    otpModal.style.display = 'flex';
+                    otpInputs[0].focus();
+                    
+                    // Show success message
+                    showSuccessMessage('signupSuccessMessage');
+                }
+            });
+            
+            // Verify OTP button
+            verifyBtn.addEventListener('click', function() {
+                const enteredOTP = Array.from(otpInputs).map(input => input.value).join('');
+                
+                if (enteredOTP.length !== 6) {
+                    alert('Please enter the complete 6-digit OTP');
+                    return;
+                }
+                
+                if (enteredOTP === generatedOTP) {
+                    // OTP verified, create account
+                    users.push(currentSignupData);
+                    localStorage.setItem('users', JSON.stringify(users));
+                    
+                    // Close OTP modal
+                    otpModal.style.display = 'none';
+                    
+                    // Reset OTP fields
+                    otpInputs.forEach(input => input.value = '');
+                    
+                    // Show login form
+                    formContainer.classList.remove('show-signup');
+                    
+                    // Reset forms
+                    signupForm.reset();
+                    resetFormErrors('signup');
+                    
+                    // Show success message
+                    alert('Account created successfully! You can now login.');
+                } else {
+                    alert('Invalid OTP. Please try again.');
+                }
+            });
+            
+            // Resend OTP
+            resendOtp.addEventListener('click', function(e) {
+                e.preventDefault();
+                generatedOTP = generateOTP();
+                sendOTP(currentSignupData.email, generatedOTP);
+                alert('New OTP has been sent to your email');
+            });
+            
+            // Logout button
+            logoutBtn.addEventListener('click', function() {
+                currentUser = null;
+                dashboard.style.display = 'none';
+                formContainer.style.display = 'block';
+                document.getElementById('loginForm').style.opacity = '1';
+                document.getElementById('loginForm').style.transform = 'translateX(0)';
+                loginForm.reset();
+                resetFormErrors('login');
+            });
+            
+            // Helper Functions
+            
             function togglePasswordVisibility(inputId, toggleIcon) {
                 const input = document.getElementById(inputId);
                 if (input.type === 'password') {
@@ -440,41 +893,49 @@
                 }
             }
             
-            loginPasswordToggle.addEventListener('click', function() {
-                togglePasswordVisibility('loginPassword', this);
-            });
+            function updatePasswordStrength(password) {
+                const strengthMeter = document.getElementById('passwordStrength');
+                let strength = 0;
+                
+                // Check for length
+                if (password.length >= 8) strength++;
+                
+                // Check for uppercase letters
+                if (/[A-Z]/.test(password)) strength++;
+                
+                // Check for lowercase letters
+                if (/[a-z]/.test(password)) strength++;
+                
+                // Check for numbers
+                if (/[0-9]/.test(password)) strength++;
+                
+                // Check for special characters
+                if (/[^A-Za-z0-9]/.test(password)) strength++;
+                
+                // Update strength meter
+                strengthMeter.className = 'strength-meter';
+                strengthMeter.classList.add(`strength-${Math.min(strength, 4)}`);
+            }
             
-            signupPasswordToggle.addEventListener('click', function() {
-                togglePasswordVisibility('signupPassword', this);
-            });
-            
-            signupConfirmPasswordToggle.addEventListener('click', function() {
-                togglePasswordVisibility('signupConfirmPassword', this);
-            });
-            
-            // Validation functions
             function validateLoginForm() {
                 let isValid = true;
-                
-                const username = document.getElementById('loginUsername').value.trim();
-                const password = document.getElementById('loginPassword').value.trim();
-                
-                // Reset errors
-                document.getElementById('loginUsernameError').style.display = 'none';
-                document.getElementById('loginPasswordError').style.display = 'none';
+                const username = document.getElementById('loginUsername').value;
+                const password = document.getElementById('loginPassword').value;
                 
                 // Validate username
-                if (!username) {
-                    document.getElementById('loginUsernameError').textContent = 'Please enter your username';
-                    document.getElementById('loginUsernameError').style.display = 'block';
+                if (username.trim() === '') {
+                    showError('loginUsernameError', 'Please enter your username');
                     isValid = false;
+                } else {
+                    hideError('loginUsernameError');
                 }
                 
                 // Validate password
-                if (!password) {
-                    document.getElementById('loginPasswordError').textContent = 'Please enter your password';
-                    document.getElementById('loginPasswordError').style.display = 'block';
+                if (password.trim() === '') {
+                    showError('loginPasswordError', 'Please enter your password');
                     isValid = false;
+                } else {
+                    hideError('loginPasswordError');
                 }
                 
                 return isValid;
@@ -482,132 +943,185 @@
             
             function validateSignupForm() {
                 let isValid = true;
-                
-                const username = document.getElementById('signupUsername').value.trim();
-                const email = document.getElementById('signupEmail').value.trim();
+                const username = document.getElementById('signupUsername').value;
+                const email = document.getElementById('signupEmail').value;
                 const password = document.getElementById('signupPassword').value;
-                const confirmPassword = document.getElementById('signupConfirmPassword').value;
-                
-                // Reset errors
-                document.getElementById('signupUsernameError').style.display = 'none';
-                document.getElementById('signupEmailError').style.display = 'none';
-                document.getElementById('signupPasswordError').style.display = 'none';
-                document.getElementById('signupConfirmPasswordError').style.display = 'none';
+                const contact = document.getElementById('signupContact').value;
                 
                 // Validate username
-                if (!username) {
-                    document.getElementById('signupUsernameError').textContent = 'Please enter a username';
-                    document.getElementById('signupUsernameError').style.display = 'block';
+                if (username.trim() === '') {
+                    showError('signupUsernameError', 'Please enter a username');
                     isValid = false;
                 } else if (username.length < 4 || username.length > 20) {
-                    document.getElementById('signupUsernameError').textContent = 'Username must be 4-20 characters';
-                    document.getElementById('signupUsernameError').style.display = 'block';
+                    showError('signupUsernameError', 'Username must be 4-20 characters');
                     isValid = false;
+                } else {
+                    hideError('signupUsernameError');
                 }
                 
                 // Validate email
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!email) {
-                    document.getElementById('signupEmailError').textContent = 'Please enter your email';
-                    document.getElementById('signupEmailError').style.display = 'block';
+                if (email.trim() === '') {
+                    showError('signupEmailError', 'Please enter your email');
                     isValid = false;
-                } else if (!emailRegex.test(email)) {
-                    document.getElementById('signupEmailError').textContent = 'Please enter a valid email';
-                    document.getElementById('signupEmailError').style.display = 'block';
+                } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    showError('signupEmailError', 'Please enter a valid email');
                     isValid = false;
+                } else {
+                    hideError('signupEmailError');
                 }
-                
-                // Validate password
-                if (!password) {
-                    document.getElementById('signupPasswordError').textContent = 'Please enter a password';
-                    document.getElementById('signupPasswordError').style.display = 'block';
+
+
+                            // Validate password
+                if (password.trim() === '') {
+                    showError('signupPasswordError', 'Please enter a password');
                     isValid = false;
                 } else if (password.length < 8) {
-                    document.getElementById('signupPasswordError').textContent = 'Password must be at least 8 characters';
-                    document.getElementById('signupPasswordError').style.display = 'block';
+                    showError('signupPasswordError', 'Password must be at least 8 characters');
                     isValid = false;
+                } else if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password) || !/[^A-Za-z0-9]/.test(password)) {
+                    showError('signupPasswordError', 'Password must contain uppercase, lowercase, number, and special character');
+                    isValid = false;
+                } else {
+                    hideError('signupPasswordError');
                 }
                 
-                // Validate confirm password
-                if (!confirmPassword) {
-                    document.getElementById('signupConfirmPasswordError').textContent = 'Please confirm your password';
-                    document.getElementById('signupConfirmPasswordError').style.display = 'block';
+                // Validate contact
+                if (contact.trim() === '') {
+                    showError('signupContactError', 'Please enter your phone number');
                     isValid = false;
-                } else if (password !== confirmPassword) {
-                    document.getElementById('signupConfirmPasswordError').textContent = 'Passwords do not match';
-                    document.getElementById('signupConfirmPasswordError').style.display = 'block';
+                } else if (!/^[0-9]{10,15}$/.test(contact)) {
+                    showError('signupContactError', 'Please enter a valid phone number (10-15 digits)');
                     isValid = false;
+                } else {
+                    hideError('signupContactError');
                 }
                 
                 return isValid;
             }
             
-       // Form submission handlers
-            loginBtn.addEventListener('click', function() {
-                if (validateLoginForm()) {
-                    const username = document.getElementById('loginUsername').value.trim();
-                    const password = document.getElementById('loginPassword').value;
-                    
-                    const users = JSON.parse(localStorage.getItem('users'));
-                    
-                    if (users[username] && users[username].password === password) {
-                        // Successful login
-                        alert(`Welcome back, ${username}! Login successful.`);
-                        // Redirect to dashboard or home page
-                    } else {
-                        // Failed login
-                        alert('Invalid username or password. Please try again.');
-                    }
-                }
-            });
+            function showError(elementId, message) {
+                const errorElement = document.getElementById(elementId);
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
             
-            signupBtn.addEventListener('click', function() {
-                if (validateSignupForm()) {
-                    const username = document.getElementById('signupUsername').value.trim();
-                    const email = document.getElementById('signupEmail').value.trim();
-                    const password = document.getElementById('signupPassword').value;
-                    
-                    const users = JSON.parse(localStorage.getItem('users'));
-                    
-                    if (users[username]) {
-                        // Username already exists
-                        document.getElementById('signupUsernameError').textContent = 'Username already taken';
-                        document.getElementById('signupUsernameError').style.display = 'block';
-                        return;
-                    }
-                    
-                    // Create new user
-                    users[username] = {
-                        email: email,
-                        password: password, // In a real app, this should be hashed
-                        createdAt: new Date().toISOString()
-                    };
-                    
-                    // Save to local storage
-                    localStorage.setItem('users', JSON.stringify(users));
-                    
-                    // Show success message
-                    successMessage.style.display = 'block';
-                    
-                    // Clear form
-                    document.getElementById('signupUsername').value = '';
-                    document.getElementById('signupEmail').value = '';
-                    document.getElementById('signupPassword').value = '';
-                    document.getElementById('signupConfirmPassword').value = '';
-                    
-                    // Auto switch to login after 3 seconds
-                    setTimeout(() => {
-                        signupForm.style.display = 'none';
-                        loginForm.style.display = 'block';
-                        formTitle.textContent = 'Login to Account';
-                        formSubtitle.textContent = 'Welcome back! Please enter your details';
-                        successMessage.style.display = 'none';
-                    }, 3000);
+            function hideError(elementId) {
+                document.getElementById(elementId).style.display = 'none';
+            }
+            
+            function resetFormErrors(formType) {
+                if (formType === 'login') {
+                    hideError('loginUsernameError');
+                    hideError('loginPasswordError');
+                } else {
+                    hideError('signupUsernameError');
+                    hideError('signupEmailError');
+                    hideError('signupPasswordError');
+                    hideError('signupContactError');
                 }
-            });
+            }
+            
+            function showSuccessMessage(elementId) {
+                const successElement = document.getElementById(elementId);
+                successElement.style.display = 'block';
+                setTimeout(() => {
+                    successElement.style.display = 'none';
+                }, 5000);
+            }
+            
+            function generateOTP() {
+                return Math.floor(100000 + Math.random() * 900000).toString();
+            }
+            
+            function sendOTP(email, otp) {
+                const templateParams = {
+                    to_email: email,
+                    otp_code: otp
+                };
+                
+                emailjs.send('service_dhd8ajj', 'template_xkev1mi', templateParams)
+                    .then(function(response) {
+                        console.log('OTP sent successfully', response.status, response.text);
+                    }, function(error) {
+                        console.log('Failed to send OTP', error);
+                        alert('Failed to send OTP. Please try again later.');
+                    });
+            }
+            
+            function showDashboard() {
+                formContainer.style.display = 'none';
+                dashboard.style.display = 'block';
+                
+                // Display user data
+                displayUserData();
+            }
+            
+            function displayUserData() {
+                if (!currentUser) return;
+                
+                usersList.innerHTML = '';
+                
+                // Create user card for current user
+                const userCard = document.createElement('div');
+                userCard.className = 'user-card';
+                userCard.innerHTML = `
+                    <h3><i class="fas fa-user-circle"></i> Your Profile</h3>
+                    <div class="user-details">
+                        <div class="detail">
+                            <p><span>Username:</span> ${currentUser.username}</p>
+                            <p><span>Email:</span> ${currentUser.email}</p>
+                        </div>
+                        <div class="detail">
+                            <p><span>Contact:</span> ${currentUser.contact}</p>
+                            <p><span>Status:</span> ${currentUser.verified ? 'Verified' : 'Not Verified'}</p>
+                        </div>
+                    </div>
+                `;
+                
+                usersList.appendChild(userCard);
+                
+                // Add other users if any (for demo purposes)
+                if (users.length > 1) {
+                    const otherUsersHeader = document.createElement('h3');
+                    otherUsersHeader.style.color = 'gold';
+                    otherUsersHeader.style.marginTop = '30px';
+                    otherUsersHeader.style.marginBottom = '15px';
+                    otherUsersHeader.textContent = 'Other Registered Users';
+                    usersList.appendChild(otherUsersHeader);
+                    
+                    users.forEach(user => {
+                        if (user.username !== currentUser.username) {
+                            const otherUserCard = document.createElement('div');
+                            otherUserCard.className = 'user-card';
+                            otherUserCard.innerHTML = `
+                                <h3><i class="fas fa-user"></i> ${user.username}</h3>
+                                <div class="user-details">
+                                    <div class="detail">
+                                        <p><span>Email:</span> ${user.email}</p>
+                                    </div>
+                                    <div class="detail">
+                                        <p><span>Status:</span> ${user.verified ? 'Verified' : 'Not Verified'}</p>
+                                    </div>
+                                </div>
+                            `;
+                            usersList.appendChild(otherUserCard);
+                        }
+                    });
+                }
+            }
+            
+            // Check if user is already logged in
+            function checkLoggedIn() {
+                const loggedInUser = localStorage.getItem('loggedInUser');
+                if (loggedInUser) {
+                    currentUser = JSON.parse(loggedInUser);
+                    showDashboard();
+                }
+            }
+            
+            // Initialize the app
+            checkLoggedIn();
         });
     </script>
 </body>
 </html>
-
-    
